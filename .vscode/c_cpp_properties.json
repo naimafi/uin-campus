@@ -1,0 +1,20 @@
+
+{
+    "configurations": [
+        {
+            "name": "Windows-GCC",
+            "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+            "intelliSenseMode": "windows-gcc-x64",
+            "cppStandard": "c++23",
+            "cStandard": "c17",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/include/**"
+            ],
+            "defines": [
+                "UIN_VERSION=\"0.1.0\""
+            ]
+        }
+    ],
+    "version": 4
+}
