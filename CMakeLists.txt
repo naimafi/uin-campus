@@ -49,6 +49,9 @@ endif()
 # Bibliothèque principale
 add_library(uincampus_core
     src/version.cpp
+    src/regles.cpp
+    src/saisie.cpp
+    src/statistiques.cpp
 )
 
 target_include_directories(uincampus_core
