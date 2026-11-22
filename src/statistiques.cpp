@@ -1,15 +1,15 @@
+
 #include "uincampus/statistiques.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
-#include <string>
 
 namespace uin
 {
     Statistiques calculerStatistiques(
-        const std::vector<double>& notes
+        std::span<const double> notes
     )
     {
         Statistiques resultats{};
@@ -73,64 +73,64 @@ namespace uin
         return resultats;
     }
 
-    
-void afficherStatistiques(
-    std::string_view nomUniteEnseignement,
-    const Statistiques& resultats,
-    int nombreEtudiants
-)
-{
-    std::cout << "\n====================================\n";
-    std::cout << "       STATISTIQUES DES NOTES\n";
-    std::cout << "====================================\n";
-
-    std::cout << "Unite d'enseignement : "
-              << nomUniteEnseignement << '\n';
-
-    std::cout << "Nombre d'etudiants : "
-              << nombreEtudiants << '\n';
-
-    std::cout << std::fixed << std::setprecision(2);
-
-    std::cout << "\nNote minimale : "
-              << resultats.minimum << '\n';
-
-    std::cout << "Note maximale : "
-              << resultats.maximum << '\n';
-
-    std::cout << "Moyenne : "
-              << resultats.moyenne << '\n';
-
-    std::cout << "Ecart-type : "
-              << resultats.ecartType << '\n';
-
-    std::cout << "\nNombre d'admis : "
-              << resultats.nombreAdmis << '\n';
-
-    std::cout << "Pourcentage d'admis : "
-              << resultats.pourcentageAdmis << " %\n";
-
-    std::cout << "\nREPARTITION DES MENTIONS\n";
-    std::cout << "------------------------------------\n";
-
-    for (std::size_t i = 0; i < nbMentions; ++i)
+    void afficherStatistiques(
+        std::string_view nomUniteEnseignement,
+        const Statistiques& resultats,
+        int nombreEtudiants
+    )
     {
-        const Mention mention =
-            static_cast<Mention>(i);
+        std::cout << "\n====================================\n";
+        std::cout << "       STATISTIQUES DES NOTES\n";
+        std::cout << "====================================\n";
 
-        const int effectif =
-            resultats.repartition[i];
+        std::cout << "Unite d'enseignement : "
+                  << nomUniteEnseignement << '\n';
 
-        std::cout << std::left
-                  << std::setw(15)
-                  << libelle(mention)
-                  << " : "
-                  << effectif
-                  << (effectif <= 1 ? " etudiant" : " etudiants")
-                  << '\n';
+        std::cout << "Nombre d'etudiants : "
+                  << nombreEtudiants << '\n';
+
+        std::cout << std::fixed << std::setprecision(2);
+
+        std::cout << "\nNote minimale : "
+                  << resultats.minimum << '\n';
+
+        std::cout << "Note maximale : "
+                  << resultats.maximum << '\n';
+
+        std::cout << "Moyenne : "
+                  << resultats.moyenne << '\n';
+
+        std::cout << "Ecart-type : "
+                  << resultats.ecartType << '\n';
+
+        std::cout << "\nNombre d'admis : "
+                  << resultats.nombreAdmis << '\n';
+
+        std::cout << "Pourcentage d'admis : "
+                  << resultats.pourcentageAdmis << " %\n";
+
+        std::cout << "\nREPARTITION DES MENTIONS\n";
+        std::cout << "------------------------------------\n";
+
+        for (std::size_t i = 0; i < nbMentions; ++i)
+        {
+            const Mention mention =
+                static_cast<Mention>(i);
+
+            const int effectif =
+                resultats.repartition[i];
+
+            std::cout << std::left
+                      << std::setw(15)
+                      << libelle(mention)
+                      << " : "
+                      << effectif
+                      << (effectif <= 1
+                              ? " etudiant"
+                              : " etudiants")
+                      << '\n';
+        }
+
+        std::cout << "====================================\n";
     }
-
-    std::cout << "====================================\n";
-}
-
 }

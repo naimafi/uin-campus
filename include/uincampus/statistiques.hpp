@@ -1,9 +1,10 @@
+
 #pragma once
 
 #include "uincampus/regles.hpp"
 
 #include <array>
-#include <vector>
+#include <span>
 #include <string_view>
 
 namespace uin
@@ -22,7 +23,7 @@ namespace uin
     };
 
     Statistiques calculerStatistiques(
-        const std::vector<double>& notes
+        std::span<const double> notes
     );
 
     void afficherStatistiques(

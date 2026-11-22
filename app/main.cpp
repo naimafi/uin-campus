@@ -1,12 +1,16 @@
+
+#include "uincampus/calculs.hpp"
 #include "uincampus/saisie.hpp"
 #include "uincampus/statistiques.hpp"
 
-#include <iostream>
-#include <vector>
 #include <exception>
+#include <iostream>
+#include <string>
 
 int main()
 {
+    uin::TableauDynamique notes;
+
     try
     {
         std::cout << "====================================\n";
@@ -14,7 +18,9 @@ int main()
         std::cout << "====================================\n";
 
         const std::string nomUniteEnseignement =
-    uin::lireTexte("Nom de l'unite d'enseignement : ");
+            uin::lireTexte(
+                "Nom de l'unite d'enseignement : "
+            );
 
         const int nombreEtudiants =
             uin::lireEntier(
@@ -23,12 +29,6 @@ int main()
                 200
             );
 
-        std::vector<double> notes;
-
-        notes.reserve(
-            static_cast<std::size_t>(nombreEtudiants)
-        );
-
         for (int i = 0; i < nombreEtudiants; ++i)
         {
             std::cout << "\nEtudiant " << i + 1 << '\n';
@@ -36,23 +36,31 @@ int main()
             const double note =
                 uin::lireNote("Entrez la note : ");
 
-            notes.push_back(note);
+            uin::ajouter(notes, note);
+
+            std::cout << "Taille : " << notes.taille
+                      << " | Capacite : " << notes.capacite
+                      << '\n';
         }
 
         const uin::Statistiques resultats =
-            uin::calculerStatistiques(notes);
+            uin::calculerStatistiques(uin::vue(notes));
 
-       uin::afficherStatistiques(
-    nomUniteEnseignement,
-    resultats,
-    nombreEtudiants
-);
+        uin::afficherStatistiques(
+            nomUniteEnseignement,
+            resultats,
+            nombreEtudiants
+        );
     }
     catch (const std::exception& erreur)
     {
+        uin::liberer(notes);
+
         std::cerr << "Erreur : " << erreur.what() << '\n';
         return 1;
     }
+
+    uin::liberer(notes);
 
     return 0;
 }
