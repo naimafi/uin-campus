@@ -1,66 +1,84 @@
 
-#include "uincampus/calculs.hpp"
+#include "carnet/carnet.hpp"
 #include "uincampus/saisie.hpp"
-#include "uincampus/statistiques.hpp"
 
-#include <exception>
 #include <iostream>
-#include <string>
+#include <vector>
 
 int main()
 {
-    uin::TableauDynamique notes;
+    std::vector<double> notes;
 
-    try
+    int choix{};
+
+    do
     {
-        std::cout << "====================================\n";
-        std::cout << "   STATISTIQUES D'UNE SERIE DE NOTES\n";
-        std::cout << "====================================\n";
+        choix = carnet::afficherMenu();
 
-        const std::string nomUniteEnseignement =
-            uin::lireTexte(
-                "Nom de l'unite d'enseignement : "
-            );
-
-        const int nombreEtudiants =
-            uin::lireEntier(
-                "Nombre d'etudiants (1 a 200) : ",
-                1,
-                200
-            );
-
-        for (int i = 0; i < nombreEtudiants; ++i)
+        switch (choix)
         {
-            std::cout << "\nEtudiant " << i + 1 << '\n';
+            case 1:
+                carnet::ajouter(notes);
+                break;
 
-            const double note =
-                uin::lireNote("Entrez la note : ");
+            case 2:
+                carnet::afficherNotes(notes);
+                break;
 
-            uin::ajouter(notes, note);
+            case 3:
+                carnet::modifier(notes);
+                break;
 
-            std::cout << "Taille : " << notes.taille
-                      << " | Capacite : " << notes.capacite
-                      << '\n';
+            case 4:
+                carnet::supprimer(notes);
+                break;
+
+            case 5:
+            {
+                std::cout << "\n1. Croissant\n";
+                std::cout << "2. Decroissant\n";
+
+                const int sens = uin::lireEntier(
+                    "Choisir le sens : ",
+                    1,
+                    2
+                );
+
+                carnet::trier(
+                    notes,
+                    sens == 1
+                        ? carnet::Ordre::Croissant
+                        : carnet::Ordre::Decroissant
+                );
+
+                std::cout << "Notes triees avec succes.\n";
+                break;
+            }
+
+            case 6:
+                carnet::afficherStatistiques(notes);
+                break;
+
+            case 7:
+            {
+                const double bonus =
+                    uin::lireNote("Bonus a appliquer : ");
+
+                carnet::appliquerBonus(notes, bonus);
+
+                std::cout << "Bonus applique avec succes.\n";
+                break;
+            }
+
+            case 0:
+                std::cout << "Fermeture du carnet de notes.\n";
+                break;
+
+            default:
+                break;
         }
 
-        const uin::Statistiques resultats =
-            uin::calculerStatistiques(uin::vue(notes));
-
-        uin::afficherStatistiques(
-            nomUniteEnseignement,
-            resultats,
-            nombreEtudiants
-        );
-    }
-    catch (const std::exception& erreur)
-    {
-        uin::liberer(notes);
-
-        std::cerr << "Erreur : " << erreur.what() << '\n';
-        return 1;
-    }
-
-    uin::liberer(notes);
+    } while (choix != 0);
 
     return 0;
 }
