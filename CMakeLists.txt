@@ -46,16 +46,13 @@ if(UIN_ACTIVER_SANITIZERS AND NOT MSVC)
     )
 endif()
 
-# Bibliothèque principale
-
-
+# Bibliotheque principale
 add_library(uincampus_core
     src/version.cpp
     src/regles.cpp
     src/saisie.cpp
     src/statistiques.cpp
     src/calculs.cpp
-    src/carnet.cpp
 )
 
 target_include_directories(uincampus_core
